@@ -1,9 +1,6 @@
 import { useState, useRef, useEffect } from 'react';
 import interact from 'interactjs';
 
-//
-// ─── CLOCK ───────────────────────────────────────────────────────────────────────
-//
 const Clock = () => {
   const [time, setTime] = useState(new Date());
 
@@ -45,18 +42,18 @@ const Window = ({ title, children, style, onActivate }) => {
     const element = windowRef.current;
     if (!element) return;
 
-    // Parse the initial top/left from the style prop
+
     const position = {
       x: parseInt(style.left, 10) || 0,
       y: parseInt(style.top, 10) || 0
     };
 
-    // Set initial CSS positioning
+
     element.style.position = 'absolute';
     element.style.left = `${position.x}px`;
     element.style.top = `${position.y}px`;
 
-    // Setup Interact.js for dragging
+
     const dragInstance = interact(element).draggable({
       allowFrom: '.window-header',
       inertia: false,
@@ -67,11 +64,11 @@ const Window = ({ title, children, style, onActivate }) => {
             .getBoundingClientRect();
           const elementRect = element.getBoundingClientRect();
 
-          // Update position based on drag delta
+
           position.x += event.dx;
           position.y += event.dy;
 
-          // Constrain within the container
+
           position.x = Math.max(
             0,
             Math.min(position.x, containerRect.width - elementRect.width)
@@ -81,15 +78,15 @@ const Window = ({ title, children, style, onActivate }) => {
             Math.min(position.y, containerRect.height - elementRect.height)
           );
 
-          // Apply the updated position
+
           element.style.left = `${position.x}px`;
           element.style.top = `${position.y}px`;
 
-          // Show a slight shadow while dragging
+
           element.style.boxShadow = '0 8px 32px rgba(183, 157, 203, 0.3)';
         },
         end() {
-          // Remove the shadow when the user lets go
+
           element.style.boxShadow = '';
         }
       }
@@ -101,7 +98,7 @@ const Window = ({ title, children, style, onActivate }) => {
   }, [style.left, style.top]);
 
   const handleWindowClick = (e) => {
-    // Don't trigger activation on the title-bar buttons themselves
+    // stop lookjng through my shitty code
     if (!e.target.closest('.window-header') || !e.target.closest('.window-buttons')) {
       onActivate && onActivate();
     }
@@ -132,9 +129,7 @@ const Window = ({ title, children, style, onActivate }) => {
   );
 };
 
-//
-// ─── FEEDBACK MODAL ─────────────────────────────────────────────────────────────
-//
+//feed back thing
 const FeedbackModal = ({ isOpen, onClose }) => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -499,7 +494,7 @@ function Terminal() {
 
   return (
     <div className="flex flex-col w-full h-full bg-pastelPink text-gray-800 font-mono border border-pink-300">
-      {/* Output area – only shows the most recent command's result */}
+      {/* output (fixed to only show most recent output) */}
       <div
         ref={containerRef}
         className="flex-1 p-3 overflow-hidden"
@@ -508,7 +503,7 @@ function Terminal() {
         {terminalOutput}
       </div>
 
-      {/* Input row pinned to bottom */}
+      {/* fuck this stupid shit i tried to make this work for like an hour yesterday */}
       <form
         onSubmit={handleSubmit}
         className="flex items-center border-t border-pink-300 p-2"
@@ -521,7 +516,7 @@ function Terminal() {
           value={userCommand}
           onChange={(e) => setUserCommand(e.target.value)}
           onBlur={(e) => {
-            // Keep focus in the input if you want
+            // keep focus on user input
             e.target.focus();
           }}
         />
@@ -530,7 +525,7 @@ function Terminal() {
   );
 }
 
-// First, let's add the LastFM component near the other component definitions
+// stopppppp looking through this ik its shit
 const LastFM = ({ currentTrack }) => {
   if (!currentTrack) {
     return (
@@ -625,9 +620,7 @@ const LastFM = ({ currentTrack }) => {
   }
 };
 
-//
-// ─── HOME PAGE ──────────────────────────────────────────────────────────────────
-//
+
 export default function Home() {
   const [confession, setConfession] = useState('');
   const [smsStatus, setSmsStatus] = useState('');
@@ -770,14 +763,14 @@ made by emily
 `
   });
 
-  // Static system stats
+  // static system stats (tried to get dynamic to work and it suckedddd)
   const systemStats = {
     cpu: '8.42',
     ram: '36',
     battery: '73'
   };
 
-  // Photo array
+  // photo array (only one of these is used lmao)
   const photos = [
     '/photos/photo1.jpeg',
     '/photos/photo4.jpeg',
@@ -789,7 +782,7 @@ made by emily
     '/photos/photo11.jpeg'
   ];
 
-  // Shuffle function
+  // shuffle photos 
   const shuffleArray = (array) => {
     for (let i = array.length - 1; i > 0; i--) {
       const j = Math.floor(Math.random() * (i + 1));
@@ -798,7 +791,7 @@ made by emily
     return array;
   };
 
-  // Shuffle photos on first load
+  // shuffle photos on first open (doesnt matter cause its literally only one rnnnnnnn ijbollllll)
   const [shuffledPhotos, setShuffledPhotos] = useState(() => shuffleArray([...photos]));
 
   const PhotoSlideshow = () => {
@@ -806,7 +799,7 @@ made by emily
       setCurrentPhotoIndex((prevIndex) => {
         const newIndex = prevIndex === shuffledPhotos.length - 1 ? 0 : prevIndex + 1;
         if (newIndex === 0) {
-          // Reshuffle when we wrap around
+          // reshuffle
           setShuffledPhotos(shuffleArray([...photos]));
         }
         return newIndex;
@@ -1072,7 +1065,7 @@ made by emily
             this website works best on a laptop or larger screen! 
           </p>
           <p className="text-sm text-gray-500 font-mono">
-            (you can still view it, but it might look a bit funny!)
+            (you cant view it on a smaller screen yet, but you might be able to soon!)
           </p>
         </div>
       </div>
@@ -1082,7 +1075,7 @@ made by emily
   return (
     <div className="min-h-screen bg-[#f8e8ff] overflow-hidden">
       <MobileWarning />
-      {/* Menu bar */}
+      {/* menuuuuu bar */}
       <div className="menubar">
         <div className="menubar-left">
           <span>Finder</span>
